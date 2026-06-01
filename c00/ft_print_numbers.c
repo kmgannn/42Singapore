@@ -11,7 +11,7 @@ void ft_is_negative(int n)
     {
         ft_putchar('+');
     }
-    else if (n  < 0)
+    else (n  < 0)
     {
         ft_putchar('-');
     }
