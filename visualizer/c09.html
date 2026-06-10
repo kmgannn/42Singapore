@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C09 Makefiles & Linking Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+    
+        .code-line {
+            display: flex;
+            gap: 16px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .code-line-num {
+            color: var(--text-muted);
+            width: 20px;
+            text-align: right;
+            user-select: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding-right: 8px;
+        }
+        .code-line-content {
+            color: #c084fc;
+            white-space: pre;
+        }
+        .code-line.active-line-highlight {
+            background: rgba(139, 92, 246, 0.25);
+            border-left: 3px solid var(--accent-primary);
+            box-shadow: inset 2px 0 8px rgba(139, 92, 246, 0.15);
+        }
+        .code-line.active-line-highlight .code-line-content {
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+        }
+    
+
+        /* Specific CSS for C09 compiler/Makefile graph */
+        .compilation-graph {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            width: 100%;
+            padding: 16px;
+        }
+        .graph-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            min-height: 350px;
+        }
+        .file-node {
+            padding: 10px 14px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .file-node.compiling {
+            border-color: var(--accent-warning);
+            background: rgba(245, 158, 11, 0.08);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+            transform: scale(1.02);
+        }
+        .file-node.compiled {
+            border-color: var(--accent-success);
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+        .file-node.archived {
+            border-color: var(--accent-primary);
+            background: rgba(139, 92, 246, 0.08);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        }
+        .file-node.deleted {
+            opacity: 0.3;
+            text-decoration: line-through;
+        }
+        .node-tag {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .tag-src { background-color: var(--accent-secondary); }
+        .tag-obj { background-color: var(--accent-warning); }
+        .tag-lib { background-color: var(--accent-primary); }
+    </style>
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="logo">
+                <a href="index.html" class="back-link">&larr; Dashboard</a>
+                <span class="pulse-dot"></span>
+                <h1>C09: Makefiles & Linking</h1>
+            </div>
+            <div class="exercise-selector-container">
+                <label for="exercise-select">Makefile Target:</label>
+                <select id="exercise-select">
+                    <option value="make_all" selected>make all (compile & archive)</option>
+                    <option value="make_clean">make clean (remove objects)</option>
+                    <option value="make_fclean">make fclean (remove all outputs)</option>
+                    <option value="make_re">make re (rebuild all)</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <main class="grid-layout">
+            <!-- Left Panel: Input & Control -->
+            <section class="panel glass controls-panel">
+                <h2>Makefile Controls</h2>
+                
+                <div class="form-group">
+                    <label>Compiler Flags:</label>
+                    <code style="background:rgba(15,23,42,0.8); padding:8px; border-radius:4px; font-family:var(--font-mono); font-size:0.8rem; color:#fff;">CC = gcc<br>CFLAGS = -Wall -Wextra -Werror</code>
+                </div>
+
+                <div class="playback-controls">
+                    <button id="btn-reset" title="Reset Simulation">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6M21.5 22v-6h-6"/><path d="M22 11.5A10 10 0 0 0 7.9 4.3L2.5 8m19.5 8l-5.4 3.7A10 10 0 0 1 2 12.5"/></svg>
+                        Reset
+                    </button>
+                    <button id="btn-prev" title="Step Backward">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                    </button>
+                    <button id="btn-play" class="btn-primary" title="Play / Pause">
+                        <svg id="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <svg id="pause-icon" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        <span>Play</span>
+                    </button>
+                    <button id="btn-next" title="Step Forward">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                    </button>
+                </div>
+
+                <div class="form-group speed-slider-container">
+                    <label for="speed-slider">Simulation Speed:</label>
+                    <div class="slider-wrapper">
+                        <span>Slow</span>
+                        <input type="range" id="speed-slider" min="100" max="1500" value="600" step="50">
+                        <span>Fast</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: Visualization Stage -->
+            <section class="panel glass visualization-panel">
+                <div class="stage-header">
+                    <h2>Makefile Compilation Pipeline Graph</h2>
+                </div>
+
+                <!-- Simulation Space -->
+                <div class="simulation-space" style="display: flex; gap: 24px; flex-wrap: wrap;">
+                    <!-- Left Column: C Code -->
+                    <div class="code-column" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 10px;">
+                        <h3>C Source Code Execution</h3>
+                        <div class="code-box-wrapper" id="code-viewer-box" style="background: rgba(10, 15, 26, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: var(--radius-sm); padding: 12px; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.5; color: #f3f4f6; overflow-y: auto; max-height: 250px;">
+                            <!-- Code lines populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="vars-column" style="flex: 1.2; min-width: 320px; display: flex; flex-direction: column; gap: 20px;">
+                        <div class="compilation-graph">
+                        <!-- C Files Column -->
+                        <div class="graph-column" id="col-c-files">
+                            <h3 style="font-size:0.85rem; color:var(--text-muted); text-align:center;">C Source Files</h3>
+                            <!-- Source nodes dynamically populated -->
+                        </div>
+
+                        <!-- O Files Column -->
+                        <div class="graph-column" id="col-o-files">
+                            <h3 style="font-size:0.85rem; color:var(--text-muted); text-align:center;">Object Files (.o)</h3>
+                            <!-- Object nodes populated -->
+                        </div>
+
+                        <!-- Archive Column -->
+                        <div class="graph-column" id="col-lib-files">
+                            <h3 style="font-size:0.85rem; color:var(--text-muted); text-align:center;">Static Library (.a)</h3>
+                            <!-- Library nodes populated -->
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Left Panel: Console Logs -->
+            <section class="panel glass console-panel">
+                <h2>Compiler Shell Console</h2>
+                <div class="console-box" id="console-logs">
+                    <div class="log-line system-log">bash-5.1$ ready.</div>
+                </div>
+            </section>
+
+            <!-- Bottom Right Panel: Mental Guide -->
+            <section class="panel glass guide-panel">
+                <h2>Mental Guide & Pitfalls</h2>
+                <div class="guide-content" id="guide-content">
+                    <!-- Dynamic guides populated by JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="c09.js"></script>
+</body>
+</html>
