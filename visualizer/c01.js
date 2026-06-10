@@ -335,10 +335,10 @@ function* simulate_strlen(strVal) {
     };
 }
 
-function* simulate_ft_ft(initVal) {
+function* simulate_ft_ft() {
     let vars = [
         { name: "ptr (int *)", val: "0x7FFA10 (points to n)", addr: "0x7FFA20", state: "active" },
-        { name: "n (int)", val: initVal, addr: "0x7FFA10", state: "none" }
+        { name: "n (int)", val: "0", addr: "0x7FFA10", state: "none" }
     ];
 
     yield {
@@ -819,7 +819,7 @@ function setupSimulation() {
 
     switch (exercise) {
         case "ft_ft":
-            currentGenerator = simulate_ft_ft(a);
+            currentGenerator = simulate_ft_ft();
             break;
         case "ft_ultimate_ft":
             currentGenerator = simulate_ultimate_ft();
