@@ -1,20 +1,17 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_div_mod.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/02 12:19:55 by kgan              #+#    #+#             */
+/*   Updated: 2026/06/02 12:19:59 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void    ft_div_mod(int a, int b, int *div, int *mod)
+void	ft_div_mod(int a, int b, int *div, int *mod)
 {
-    *div = a/b;
-    *mod = a%b;
+	*div = a / b;
+	*mod = a % b;
 }
-
-/*
-int main(void)
-{
-    int a = 10;
-    int b = 3;
-    int div;
-    int mod;
-    ft_div_mod(a, b, &div, &mod);
-    printf("div = %d, mod = %d\n", div, mod);
-    return (0);
-}
-*/

@@ -1,5 +1,14 @@
-#include <unistd.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/02 12:19:55 by kgan              #+#    #+#             */
+/*   Updated: 2026/06/02 12:19:59 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 int	ft_strlen(char *str)
 {
@@ -12,17 +21,3 @@ int	ft_strlen(char *str)
 	}
 	return (i);
 }
-
-int	main(void)
-{
-	printf("%d\n", ft_strlen("hello world\n"));
-	return (0);
-}
-
-/*
-i is string length counter
-i = 0 initialize counter
-while (str[i] != '\0') loop until null terminator
-i++ add 1 to the counter
-return (i) return the length
-*/

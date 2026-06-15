@@ -1,16 +1,22 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ultimate_div_mod.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/02 12:19:55 by kgan              #+#    #+#             */
+/*   Updated: 2026/06/02 12:19:59 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void ft_ulimate_div_mod(int *a, int *b)
+void	ft_ultimate_div_mod(int *a, int *b)
 {
-    *a = *a / *b;
-    *b = *a % *b;
-}
+	int	temp_div;
+	int	temp_mod;
 
-int main(void)
-{
-    int a = 20;
-    int b = 4;
-    ft_ulimate_div_mod(&a, &b); //store in the memory of a and b
-    printf("a = %d, b = %d\n", a, b);
-    return (0);
+	temp_div = *a / *b;
+	temp_mod = *a % *b;
+	*a = temp_div;
+	*b = temp_mod;
 }
