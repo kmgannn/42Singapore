@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/16 11:31:32 by kgan              #+#    #+#             */
+/*   Updated: 2026/06/16 11:31:32 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 int	ft_sqrt(int nb)
 {
 	int	odd;
@@ -17,19 +29,3 @@ int	ft_sqrt(int nb)
 		return (step);
 	return (0);
 }
-
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("sqrt(0) = %d\n", ft_sqrt(0));
-	printf("sqrt(1) = %d\n", ft_sqrt(1));
-	printf("sqrt(4) = %d\n", ft_sqrt(4));
-	printf("sqrt(25) = %d\n", ft_sqrt(25));
-	printf("sqrt(26) = %d\n", ft_sqrt(26));
-	printf("sqrt(-5) = %d\n", ft_sqrt(-5));
-	printf("sqrt(2147395600) = %d\n", ft_sqrt(2147395600)); 
-	return (0);
-}
-*/

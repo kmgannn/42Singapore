@@ -1,12 +1,20 @@
-int ft_recursive_power(int nb, int power)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_recursive_power.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/16 11:31:32 by kgan              #+#    #+#             */
+/*   Updated: 2026/06/16 11:31:32 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int	ft_recursive_power(int nb, int power)
 {
-    if (power < 0)
-    {
-        power = 0;
-    }
-    if (power == 0)
-    {
-        return(1);
-    }
-    return (nb*ft_recursive_power(nb, power-1));
+	if (power < 0)
+		return (0);
+	if (power == 0)
+		return (1);
+	return (nb * ft_recursive_power(nb, power - 1));
 }
