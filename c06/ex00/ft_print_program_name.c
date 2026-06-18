@@ -1,41 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_program_name.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <kgan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/17 14:54:06 by kgan              #+#    #+#             */
+/*   Updated: 2026/06/17 14:54:06 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 
-static void	ft_putnbr(int n)
-{
-	char	c;
-
-	if (n < 0)
-	{
-		write(1, "-", 1);
-		n = -n;
-	}
-	if (n > 9)
-		ft_putnbr(n / 10);
-	c = (n % 10) + '0';
-	write(1, &c, 1);
-}
-
-/*
-**	main – prints argc and every argv element.
-**	argc is the number of arguments (including the program name).
-**	argv[i] is a C‑string; write(...,0) prints the whole string.
-*/
 int	main(int argc, char **argv)
 {
-	int	i;
+	int	param;
+	int	letter;
 
-	i = 0;
-	write(1, "argc = ", 7);
-	ft_putnbr(argc);
-	write(1, "\n", 1);
-	while (i < argc)
+	param = 0;
+	while (param < 1 && argc > 0) //main logic, param<1 to select the name and argc to comply with compiler
 	{
-		write(1, "argv[", 5);
-		ft_putnbr(i);
-		write(1, "] = ", 4);
-		write(1, argv[i], 0);
+		letter = 0;
+		while (argv[param][letter] != '\0')
+		{
+			write(1, &argv[param][letter], 1);
+			letter++;
+		}
 		write(1, "\n", 1);
-		i++;
+		param++;
 	}
 	return (0);
 }

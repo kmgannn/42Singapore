@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sort_params.c                                   :+:      :+:    :+:   */
+/*   ft.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgan <kgan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,62 +9,13 @@
 /*   Updated: 2026/06/17 14:54:06 by kgan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#ifndef FT_H
+# define FT_H
 
-#include <unistd.h>
+void	ft_putchar(char c);
+void	ft_swap(int *a, int *b);
+void	ft_putstr(char *str);
+int		ft_strlen(char *str);
+int		ft_strcmp(char *s1, char *s2);
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] == s2[i] && s1[i] != '\0')
-	{
-		i++;
-	}
-	return (s1[i] - s2[i]);
-}
-
-void	print_params(int argc, char **argv)
-{
-	int	param;
-	int	letter;
-
-	param = 1;
-	while (param < argc)
-	{
-		letter = 0;
-		while (argv[param][letter] != '\0')
-		{
-			write(1, &argv[param][letter], 1);
-			letter++;
-		}
-		write(1, "\n", 1);
-		param++;
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = 1;
-	while (i < argc - 1)
-	{
-		j = i + 1;
-		while (j < argc)
-		{
-			if (ft_strcmp(argv[i], argv[j]) > 0)
-			{
-				temp = argv[i];
-				argv[i] = argv[j];
-				argv[j] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
-	print_params(argc, argv);
-	return (0);
-}
+#endif

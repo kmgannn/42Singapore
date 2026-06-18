@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sort_params.c                                   :+:      :+:    :+:   */
+/*   ft_show_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgan <kgan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,62 +9,55 @@
 /*   Updated: 2026/06/17 14:54:06 by kgan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include <unistd.h>
+#include "ft_stock_str.h"
 
-int	ft_strcmp(char *s1, char *s2)
+void	ft_putstr(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (s1[i] == s2[i] && s1[i] != '\0')
+	while (str[i])
 	{
+		write(1, &str[i], 1);
 		i++;
 	}
-	return (s1[i] - s2[i]);
 }
 
-void	print_params(int argc, char **argv)
+void	ft_putnbr(int n)
 {
-	int	param;
-	int	letter;
+	char	c;
+	long	nb;
 
-	param = 1;
-	while (param < argc)
+	nb = n;
+	if (nb < 0)
 	{
-		letter = 0;
-		while (argv[param][letter] != '\0')
-		{
-			write(1, &argv[param][letter], 1);
-			letter++;
-		}
+		write(1, "-", 1);
+		nb = -nb;
+	}
+	if (nb > 9)
+		ft_putnbr(nb / 10);
+	c = nb % 10 + '0';
+	write(1, &c, 1);
+}
+
+void	ft_show_tab(struct s_stock_str *par)
+{
+	int	i;
+
+	i = 0;
+	/* Loop until we find the struct where str is 0 (the end marker) */
+	while (par[i].str != 0)
+	{
+		/* Print the original string and a newline */
+		ft_putstr(par[i].str);
 		write(1, "\n", 1);
-		param++;
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = 1;
-	while (i < argc - 1)
-	{
-		j = i + 1;
-		while (j < argc)
-		{
-			if (ft_strcmp(argv[i], argv[j]) > 0)
-			{
-				temp = argv[i];
-				argv[i] = argv[j];
-				argv[j] = temp;
-			}
-			j++;
-		}
+		/* Print the size and a newline */
+		ft_putnbr(par[i].size);
+		write(1, "\n", 1);
+		/* Print the copied string and a newline */
+		ft_putstr(par[i].copy);
+		write(1, "\n", 1);
 		i++;
 	}
-	print_params(argc, argv);
-	return (0);
 }
