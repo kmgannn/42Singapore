@@ -8,6 +8,13 @@ a to z
 A to Z
 65 - 90
 
+int ft_isalpha(char c)
+{
+    int i = 0;
+    if ( i < 65 )
+}
+
+
 isdigit
 checks for a digit (0 through 9).
 0 to 9
