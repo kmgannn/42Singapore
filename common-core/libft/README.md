@@ -9,6 +9,7 @@ This project has been created as part of the 42 curriculum by kgan
 
 ---
 
+
 ## 1. Character Testing & Case Conversion
 
 These functions evaluate or transform a single character passed as an `int` (to handle `EOF` and `unsigned char` range).
