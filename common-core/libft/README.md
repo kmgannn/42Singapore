@@ -28,7 +28,7 @@ These functions evaluate or transform a single character passed as an `int` (to 
 
 These functions traverse null-terminated character strings.
 
-* **`ft_strlen`**: Loop through `s` until hitting `'\0'`, keeping a count.
+* **`ft_strlen`**: Returns the length of a string, reflects the number of characters until hitting `'\0'`.
 * **`ft_strchr`**: Iterate through `s` looking for the first instance of `c` (cast to `char`). **Key detail:** If `c == '\0'`, return a pointer to the string's null terminator.
 * **`ft_strrchr`**: Search for `c` starting from the end of `s` (or scan to the end and track the last seen occurrence).
 * **`ft_strncmp`**: Compare up to `n` characters of `s1` and `s2` using `unsigned char` cast comparisons. Stop early if characters differ or `'\0'` is reached.
