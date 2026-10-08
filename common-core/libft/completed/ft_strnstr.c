@@ -1,28 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgan <kgan@student.42singapore.sg>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/08 15:57:55 by kgan              #+#    #+#             */
+/*   Updated: 2026/10/08 15:58:52 by kgan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-char *ft_strnstr(const char *big, const char *little, size_t len){
-     size_t i;
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
 
-     i = 0;
-
-     if ( little[0] == '\0')
-          return ((char *)big);
-     
-     while ( i < len ){
-
-          if ( little[i] != big[i])
-               return (NULL);
-          return ( unsigned(big) - unsigned(little));
-     }
-
-};
-
-     The strnstr() function locates the first occurrence of the  null-terminated
-     string  little  in  the  string big, where not more than len characters are
-     searched.	Characters that appear after a `\0' character are not  searched.
-
-     
-     RETURN VALUES
-     If little is an empty string, big is returned; if little occurs nowhere  in
-     big,  NULL  is  returned; otherwise a pointer to the first character of the
-     first occurrence of little is returned.
+	if (!*little)
+		return ((char *)big);
+	i = 0;
+	while (big[i] != '\0' && i < len)
+	{
+		j = 0;
+		while (big[i + j] == little[j] && (i + j) < len)
+		{
+			if (little[j + 1] == '\0')
+				return ((char *)&big[i]);
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+}
