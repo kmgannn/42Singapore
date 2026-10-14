@@ -14,7 +14,10 @@ The project is split into three mandatory parts:
 
 * **Part 3 (Linked List Functions):** Implementing data structures and functions for handling single linked lists (`t_list`).
 
-Makefile: compilation automation script to automate dependencies, instead of compiling every individual file. `ar` command is an archiver because functions like libtool are forbidden. Hence the command ar rcs libft.a $(OBJS) tells the archiver to replace object files into the archive, create it if it doesn't exist, then write a symbol table in it so the compiler can quickly look up where each function lives.
+Makefile: compilation automation script to automate dependencies, instead of compiling every individual file. `ar` command is an archiver because functions like libtool are forbidden. Hence the command ar rcs libft.a $(OBJS) tells the archiver to:
+- Replace object files into the archive, 
+- Create it if it doesn't exist 
+- write a Symbol table in it so the compiler can quickly look up where each function lives.
 
 ## 1. Character Testing & Case Conversion
 
