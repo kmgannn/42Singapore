@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 AR = ar rcs
 
-SRC = 
+SRC = ft_printf.c ft_print_char.c ft_print_str.c ft_print_nbr.c ft_print_unsigned.c ft_print_ptr.c
 
 # object files (compiled intermediate machine-code)
 OBJ = $(SRC:.c=.o)
@@ -19,7 +19,7 @@ $(NAME): $(OBJ)
 	$(AR) $(NAME) $(OBJ)
 
 # 3. rule to compile .c into .o files
-%.o: %.cc
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # 4. utility rules
